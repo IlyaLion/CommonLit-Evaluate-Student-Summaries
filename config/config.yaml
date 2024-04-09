@@ -1,0 +1,60 @@
+directories:
+  data: 'Data'
+  models: 'Models'
+seed: 42
+fold: 0
+tokenizer:
+  max_length: 1024
+model:
+  backbone_type: 'microsoft/deberta-v3-base'
+  gradient_checkpointing: False
+  freeze_backbone: False
+  freeze_embeddings: False
+  freeze_first_n_layers: 0
+  reinitialize_last_n_layers: 0
+  backbone:
+    hidden_dropout: 0.0
+    hidden_dropout_prob: 0.0
+    attention_dropout: 0.0
+    attention_probs_dropout_prob: 0.0
+  pooling:
+    type: 'AttentionPooling'
+    lstm:
+      hidden_size: 512
+      dropout_rate: 0
+      bidirectional: True
+      is_lstm: True
+    weighted:
+      layer_start: 6
+    attention:
+      hiddendim_fc: 512
+      dropout: 0
+    gemtext:
+      dim: 1
+      eps: 1.e-6
+      p: 3
+training:
+  epochs: 5
+  accumulate_grad_batches: 4
+  max_grad_norm: 1
+  precision: 'bf16' 
+optimizer:
+  type: 'one_lr'
+  encoder_lr: 3.0e-5
+  weight_decay: 0.01
+  eps: 1.e-06
+  betas: [0.9, 0.999]
+scheduler:
+  anneal_strategy: 'cos'
+  div_factor: 50
+  final_div_factor: 10000
+  pct_start: 0.3
+criterion:
+  type: 'SmoothL1Loss'
+  reduction: 'mean'
+  beta: 1.0
+data_loaders:
+  train:
+    batch_size: 4
+  val:
+    batch_size: 32
