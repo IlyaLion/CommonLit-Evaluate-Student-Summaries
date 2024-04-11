@@ -52,9 +52,9 @@ def get_model(config):
     if config.model.freeze_embeddings:
         freeze(model.backbone.embeddings)
     if config.model.freeze_first_n_layers > 0:
-        freeze(model.backbone.encoder.layer[:config.model.freeze_n_layers])
+        freeze(model.backbone.encoder.layer[:config.model.freeze_first_n_layers])
     if config.model.reinitialize_last_n_layers > 0:
-        for module in model.backbone.encoder.layer[-config.model.reinitialize_n_layers:]:
+        for module in model.backbone.encoder.layer[-config.model.reinitialize_last_n_layers:]:
             model.init_weights(module)
 
     return model
